@@ -1,2 +1,2 @@
 # 42template
-Project Template for 42cursus
+Nth project for 42cursus
