@@ -54,10 +54,15 @@ fclean: clean
 re: fclean
 	@make all
 
-norm: requirements.txt
-	pip list --outdated
-	pip install -U -r requirements.txt
+pip: requirements.txt
+	python3 -m pip list --outdated
+	python3 -m pip install -U -r requirements.txt
+
+norm: $(SRCS) pip
 	norminette $(SRCS)
+
+fmt: $(SRCS) pip
+	c_formatter_42 $(SRCS)*.c $(IDIR)*.h
 
 deps:
 	nm -u $(NAME)
@@ -69,7 +74,7 @@ san: fclean
 	@make WITH_ASAN=1 WITH_NDEF=1
 
 v: all
-	valgrind $(NAME)
+	valgrind --leak-check=full --trace-children=yes ./$(NAME)
 
 -include $(DEPS)
 
